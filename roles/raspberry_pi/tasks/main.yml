@@ -1,0 +1,11 @@
+---
+- name: Ensure the Raspberry Pi boot config file parameters are set
+  ansible.builtin.lineinfile:
+    path: /boot/config.txt
+    line: "{{ item.key }}={{ item.value }}"
+    regexp: '^[#\s]*{{ item.key }}='
+    insertafter: 'dtparam='
+    create: true
+    mode: 0644
+  with_dict: "{{ raspberry_pi_boot_config }}"
+  notify: Restart rpi
