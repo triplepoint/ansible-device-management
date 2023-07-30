@@ -36,6 +36,8 @@
 
     - name: Determine whether timedatectl is currently enabled
       ansible.builtin.shell: 'set -o pipefail && timedatectl status | grep -oP "(NTP service|systemd-timesyncd.service active): \K\w+"'
+      args:
+        executable: /bin/bash
       changed_when: false
       register: _timedatectl_enabled
       failed_when: _timedatectl_enabled.rc|int not in (0, 1)
