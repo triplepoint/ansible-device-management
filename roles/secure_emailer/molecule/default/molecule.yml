@@ -1,0 +1,34 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+platforms:
+  - name: instance
+    image: "geerlingguy/docker-${MOLECULE_DISTRO:-ubuntu2004}-ansible:latest"
+    tty: true
+    privileged: true
+    volumes:
+      - "/sys/fs/cgroup:/sys/fs/cgroup:rw"
+    override_command: false
+    environment:
+      container: docker
+    pre_build_image: true
+provisioner:
+  name: ansible
+  inventory:
+    group_vars:
+      all:
+        secure_emailer_fqdn: testsite.local
+        secure_emailer_relay_server_name: smtp.gmail.com
+        secure_emailer_relay_server_port: 587
+        secure_emailer_relay_server_username: testuser
+        secure_emailer_relay_server_password: testpassword
+
+verifier:
+  name: testinfra
+lint: |
+  set -e
+  yamllint .
+  ansible-lint
+  flake8 --max-line-length=120
