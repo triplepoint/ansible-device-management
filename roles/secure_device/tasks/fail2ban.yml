@@ -1,0 +1,25 @@
+---
+- name: Uninstall fail2ban
+  when: not secure_device_install_fail2ban
+  block:
+    - name: Ensure fail2ban is not installed
+      ansible.builtin.package:
+        name: fail2ban
+        state: absent
+
+- name: Install fail2ban
+  when: secure_device_install_fail2ban
+  block:
+    - name: Ensure fail2ban is installed
+      ansible.builtin.package:
+        name: fail2ban
+        state: present
+
+    - name: Ensure the fail2ban config file is present
+      ansible.builtin.template:
+        src: jail.local.j2
+        dest: /etc/fail2ban/jail.local
+        mode: 0644
+        owner: root
+        group: root
+      notify: Reload fail2ban

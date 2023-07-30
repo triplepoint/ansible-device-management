@@ -1,0 +1,23 @@
+---
+- name: Ensure logwatch is absent
+  ansible.builtin.package:
+    name: logwatch
+    state: absent
+  when: not secure_device_log_email
+
+- name: Install logwatch
+  when: secure_device_log_email | default(false)
+  block:
+    - name: Ensure logwatch is present
+      ansible.builtin.package:
+        name: logwatch
+        state: present
+
+    - name: Ensure the logwatch configuration is set
+      ansible.builtin.lineinfile:
+        path: /usr/share/logwatch/default.conf/logwatch.conf
+        line: "{{ item.key }} = {{ item.value }}"
+        regexp: "^{{ item.key }} ="
+      with_dict:
+        Detail: High
+        MailTo: "{{ secure_device_log_email }}"
