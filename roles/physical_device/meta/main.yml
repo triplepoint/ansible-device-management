@@ -1,0 +1,18 @@
+---
+galaxy_info:
+  role_name: physical_device
+  namespace: triplepoint
+  author: Jonathan Hanson
+  description: A basic physical machine preparation role.
+  license: MIT
+  min_ansible_version: "2.9"
+  platforms:
+    - name: Ubuntu
+      versions:
+        - xenial
+        - bionic
+        - focal
+  github_branch: main
+  galaxy_tags:
+    - baremetal
+dependencies: []
