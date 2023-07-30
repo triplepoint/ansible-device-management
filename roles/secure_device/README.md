@@ -26,7 +26,7 @@ None.
 ## Example Playbook
     - hosts: whatever
       roles:
-        - triplepoint.secure_device
+        - triplepoint.device_management.secure_device
 
 ## Role Testing
 This role is tested with `molecule`, using `pipenv` to handle dependencies and the Python testing environment.

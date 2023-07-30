@@ -13,7 +13,7 @@ None.
 ## Example Playbook
     - hosts: whatever
       roles:
-        - triplepoint.raspberry_pi
+        - triplepoint.device_management.raspberry_pi
 
 ## Role Testing
 This role is tested with `molecule`, using `pipenv` to handle dependencies and the Python testing environment.

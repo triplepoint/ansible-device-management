@@ -1,7 +1,5 @@
 ---
 galaxy_info:
-  role_name: secure_device
-  namespace: triplepoint
   author: Jonathan Hanson
   description: A role responsible for some basic security tweaks for internet-facing machines
   license: MIT
@@ -11,8 +9,6 @@ galaxy_info:
       versions:
         - bionic
         - focal
-  github_branch: main
   galaxy_tags:
     - security
     - usermanagement
-dependencies: []

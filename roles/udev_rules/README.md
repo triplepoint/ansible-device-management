@@ -13,7 +13,7 @@ None.
 ## Example Playbook
     - hosts: whatever
       roles:
-        - triplepoint.udev_rules
+        - triplepoint.device_management.udev_rules
 
 ## License
 MIT

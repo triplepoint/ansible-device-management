@@ -1,7 +1,5 @@
 ---
 galaxy_info:
-  role_name: secure_emailer
-  namespace: triplepoint
   author: Jonathan Hanson
   description: A simple secure emailer using postfix, intended for securely forwarding system notifications.
   license: MIT
@@ -12,9 +10,7 @@ galaxy_info:
         - xenial
         - bionic
         - focal
-  github_branch: main
   galaxy_tags:
     - email
     - postfix
     - logging
-dependencies: []

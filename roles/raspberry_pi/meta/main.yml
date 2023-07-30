@@ -1,7 +1,5 @@
 ---
 galaxy_info:
-  role_name: raspberry_pi
-  namespace: triplepoint
   author: Jonathan Hanson
   description: A set of configurations for a Raspberry Pi Raspbian device
   license: MIT
@@ -9,7 +7,5 @@ galaxy_info:
   platforms:
     - name: Raspbian
       versions: []
-  github_branch: main
   galaxy_tags:
     - raspberrypi
-dependencies: []
