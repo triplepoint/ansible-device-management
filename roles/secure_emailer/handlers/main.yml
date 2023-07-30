@@ -1,6 +1,7 @@
 ---
 - name: Regenerate postfix database hash
   ansible.builtin.command: postmap /etc/postfix/sasl/sasl_passwd
+  changed_when: true
   notify:
     - Set password db perms
     - Restart postfix

@@ -50,3 +50,4 @@
 - name: Configure locale to {{ physical_device_locale + " and language to " + physical_device_language }}
   ansible.builtin.command: "localectl set-locale LANG={{ physical_device_locale }} LANGUAGE={{ physical_device_language }}"
   when: _physical_device_locale_lang != physical_device_locale or _physical_device_locale_language != physical_device_language
+  changed_when: true
