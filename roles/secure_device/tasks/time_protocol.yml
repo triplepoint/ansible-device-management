@@ -1,24 +1,15 @@
 ---
-- name: Ensure the NTPD package is absent
-  ansible.builtin.package:
-    name: ntp
-    state: absent
+# After a flury of time services, it looks like things settled on timedatectl
+# in systemd for the client, and chrony for running a service.
+- name: Ensure the alternative time management packages are absent
+    ansible.builtin.package:
+    name: "{{ item }}"
+     state: absent
+  with_items:
+    - ntp
+    - openntpd
 
-- name: Install an NTP service
-  when: secure_device_install_time_server
-  block:
-    - name: Ensure the Chrony package is present
-      ansible.builtin.package:
-        name: chrony
-        state: present
-
-    - name: Ensure the Chrony configuration file is installed
-      ansible.builtin.template:
-        src: chrony.conf.j2
-        dest: /etc/chrony/chrony.conf
-        mode: 0644
-      notify: Restart chrony
-
+# See: https://documentation.ubuntu.com/server/how-to/networking/timedatectl-and-timesyncd/
 - name: Only use a time server client
   when: not secure_device_install_time_server
   block:
@@ -26,13 +17,6 @@
       ansible.builtin.package:
         name: chrony
         state: absent
-
-    - name: Ensure the root user can never login via SSH
-      ansible.builtin.lineinfile:
-        dest: '/etc/ssh/sshd_config'
-        line: "PermitRootLogin no"
-        regexp: '^#?PermitRootLogin '
-      notify: Restart ssh
 
     - name: Determine whether timedatectl is currently enabled
       ansible.builtin.shell: 'set -o pipefail && timedatectl status | grep -oP "(NTP service|systemd-timesyncd.service active): \K\w+"'
@@ -46,3 +30,19 @@
       ansible.builtin.command: "timedatectl set-ntp yes"
       when: _timedatectl_enabled.rc == 0 and _timedatectl_enabled.stdout != "yes" and _timedatectl_enabled.stdout != "active"
       changed_when: true
+
+# See: https://documentation.ubuntu.com/server/how-to/networking/serve-ntp-with-chrony/#serve-ntp-with-chrony
+- name: Install a time sync service
+  when: secure_device_install_time_server
+  block:
+    - name: Ensure the Chrony package is present
+      ansible.builtin.package:
+        name: chrony
+        state: present
+
+    - name: Ensure the Chrony configuration file is installed
+      ansible.builtin.template:
+        src: chrony.conf.j2
+        dest: /etc/chrony/chrony.conf
+        mode: 0644
+      notify: Restart chrony
