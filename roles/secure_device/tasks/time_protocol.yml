@@ -2,9 +2,9 @@
 # After a flury of time services, it looks like things settled on timedatectl
 # in systemd for the client, and chrony for running a service.
 - name: Ensure the alternative time management packages are absent
-    ansible.builtin.package:
+  ansible.builtin.package:
     name: "{{ item }}"
-     state: absent
+    state: absent
   with_items:
     - ntp
     - openntpd
