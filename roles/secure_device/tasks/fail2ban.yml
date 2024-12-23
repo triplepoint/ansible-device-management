@@ -19,7 +19,7 @@
       ansible.builtin.template:
         src: jail.local.j2
         dest: /etc/fail2ban/jail.local
-        mode: 0644
+        mode: "0644"
         owner: root
         group: root
       notify: Reload fail2ban
