@@ -26,7 +26,8 @@ provisioner:
               crypted_password: "$$$$6$$$$vZuuCPtyszyk1$$$$501xY6ldPQWa5zQDsa0VJuWQCZsQQUAn8lX/mIlZq3nvEUoRLl97HQeIsy.1aIxj.2LtG7QgK4mvrsC5bbrYe1",   # "password".  Note molecule requires escaped dollar signs with doubles, where ansible does not require this.  Note that recently this broke again and required more dollar signs.
               sudo_passwordless: true     # Optional.  If absent or anything other than true, user will require a password to `sudo`
           }
-        secure_device_log_email: test@test.test
+        secure_device_log_to_email: test_to@test.test
+        secure_device_log_from_email: test_from@test.test
         secure_device_everyone_ports:
           - 80           # integer port
           - port: "100:103"    # port range

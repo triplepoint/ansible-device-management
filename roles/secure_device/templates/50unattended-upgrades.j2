@@ -17,8 +17,9 @@ Unattended-Upgrade::Remove-Unused-Kernel-Packages "false";
 
 Unattended-Upgrade::Remove-Unused-Dependencies "true";
 
-{% if secure_device_log_email %}
+{% if secure_device_log_to_email %}
 
-Unattended-Upgrade::Mail "{{ secure_device_log_email }}";
+Unattended-Upgrade::Mail "{{ secure_device_log_to_email }}";
+Unattended-Upgrade::Sender "{{ secure_device_log_from_email }}";
 Unattended-Upgrade::MailOnlyOnError "True";
 {% endif %}

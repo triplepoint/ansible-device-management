@@ -3,21 +3,34 @@
   ansible.builtin.package:
     name: logwatch
     state: absent
-  when: not secure_device_log_email
+  when: not secure_device_log_to_email
 
 - name: Install logwatch
-  when: secure_device_log_email | default(false)
+  when: secure_device_log_to_email | default(false)
   block:
     - name: Ensure logwatch is present
       ansible.builtin.package:
         name: logwatch
         state: present
 
+    - name: Check that the logwatch.conf exists
+      ansible.builtin.stat:
+        path: /etc/logwatch/conf/logwatch.conf
+      register: stat_result
+
+    - name: Ensure that a copy of the logwatch config file is present to modify
+      ansible.builtin.copy:
+        src: /usr/share/logwatch/default.conf/logwatch.conf
+        dest: /etc/logwatch/conf/logwatch.conf
+        remote_src: true
+      when: not stat_result.stat.exists
+
     - name: Ensure the logwatch configuration is set
       ansible.builtin.lineinfile:
-        path: /usr/share/logwatch/default.conf/logwatch.conf
+        path: /etc/logwatch/conf/logwatch.conf
         line: "{{ item.key }} = {{ item.value }}"
         regexp: "^{{ item.key }} ="
       with_dict:
         Detail: High
-        MailTo: "{{ secure_device_log_email }}"
+        MailTo: "{{ secure_device_log_to_email }}"
+        MailFrom: "{{ secure_device_log_from_email }}"

@@ -22,7 +22,10 @@ secure_device_users: []
 # The email address to which logfiles are emailed, for security review.
 # Should be a string email address, or false to disable emails.
 # Note that setting this "" will remove logwatch if its already installed.
-secure_device_log_email: ""
+secure_device_log_to_email: ""
+
+# The email address from which logfiles are sent.
+secure_device_log_from_email: ""
 
 # When true, install and configure fail2ban.
 secure_device_install_fail2ban: true
