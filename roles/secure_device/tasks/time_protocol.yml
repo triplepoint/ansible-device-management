@@ -18,6 +18,11 @@
         name: chrony
         state: absent
 
+    - name: Ensure the systemd-timesyncd package is present
+      ansible.builtin.package:
+        name: systemd-timesyncd
+        state: present
+
     - name: Determine whether timedatectl is currently enabled
       ansible.builtin.shell: 'set -o pipefail && timedatectl status | grep -oP "(NTP service|systemd-timesyncd.service active): \K\w+"'
       args:

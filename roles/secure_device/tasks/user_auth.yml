@@ -7,32 +7,31 @@
 
 - name: Ensure the root user can never login via SSH
   ansible.builtin.lineinfile:
-    dest: '/etc/ssh/sshd_config'
+    dest: "/etc/ssh/sshd_config"
     line: "PermitRootLogin no"
-    regexp: '^#?PermitRootLogin '
-  notify: Restart ssh
+    regexp: "^#?PermitRootLogin "
+  notify: Reload ssh
 
 - name: Ensure global SSH password auth is disabled for everyone
   ansible.builtin.lineinfile:
-    dest: '/etc/ssh/sshd_config'
+    dest: "/etc/ssh/sshd_config"
     line: "PasswordAuthentication no"
-    regexp: '^#?PasswordAuthentication '
-  notify: Restart ssh
+    regexp: "^#?PasswordAuthentication "
+  notify: Reload ssh
 
 - name: Ensure empty passwords are disabled for everyone
   ansible.builtin.lineinfile:
-    dest: '/etc/ssh/sshd_config'
+    dest: "/etc/ssh/sshd_config"
     line: "PermitEmptyPasswords no"
-    regexp: '^#?PermitEmptyPasswords '
-  notify: Restart ssh
+    regexp: "^#?PermitEmptyPasswords "
+  notify: Reload ssh
 
 - name: Ensure SSHD is listening on the desired port
   ansible.builtin.lineinfile:
-    dest: '/etc/ssh/sshd_config'
+    dest: "/etc/ssh/sshd_config"
     line: "Port {{ secure_device_sshd_port }}"
-    regexp: '^#?Port '
-  notify: Restart ssh
-
+    regexp: "^#?Port "
+  notify: Reload ssh
 
 # Users
 - name: Ensure all the users have their own groups
@@ -57,21 +56,20 @@
   ansible.builtin.lineinfile:
     dest: "/etc/sudoers.d/99-user-{{ item.username }}"
     line: '{{ item.username }} ALL=(ALL) {{ "NOPASSWD:" if item.sudo_passwordless is defined and item.sudo_passwordless else "" }}ALL'
-    regexp: '^{{ item.username }} '
-    validate: 'visudo -cf %s'
+    regexp: "^{{ item.username }} "
+    validate: "visudo -cf %s"
     create: true
     owner: root
     group: root
     mode: "0440"
   with_items: "{{ secure_device_users }}"
 
-
 # Per-User SSH Config
 - name: Ensure the user SSH keys are present, with restrictions
   ansible.posix.authorized_key:
     user: "{{ item.username }}"
     key: "{{ item.public_key }}"
-    key_options: 'no-port-forwarding,no-agent-forwarding,no-X11-forwarding'
+    key_options: "no-port-forwarding,no-agent-forwarding,no-X11-forwarding"
     state: present
   with_items: "{{ secure_device_users }}"
 
@@ -87,7 +85,10 @@
 
 - name: Only allow SSH from a specific set of hosts and users
   ansible.builtin.lineinfile:
-    dest: '/etc/ssh/sshd_config'
+    dest: "/etc/ssh/sshd_config"
     line: "AllowUsers {{ _allow_users_mapped | join(' ') }}"
-    regexp: '^#?AllowUsers .*'
-  notify: Restart ssh
+    regexp: "^#?AllowUsers .*"
+  notify: Reload ssh
+
+- name: Ensure SSH changes take effect before we go on
+  ansible.builtin.meta: flush_handlers

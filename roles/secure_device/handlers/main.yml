@@ -1,8 +1,8 @@
 ---
-- name: Restart ssh
+- name: Reload ssh
   ansible.builtin.service:
     name: ssh
-    state: restarted
+    state: reloaded
 
 - name: Restart chrony
   ansible.builtin.service:

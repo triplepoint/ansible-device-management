@@ -13,6 +13,12 @@
         name: logwatch
         state: present
 
+    - name: Ensure the logwatch cache directory exists
+      ansible.builtin.file:
+        path: /var/cache/logwatch
+        state: directory
+        mode: "0755"
+
     - name: Check that the logwatch.conf exists
       ansible.builtin.stat:
         path: /etc/logwatch/conf/logwatch.conf
@@ -34,3 +40,4 @@
         Detail: High
         MailTo: "{{ secure_device_log_to_email }}"
         MailFrom: "{{ secure_device_log_from_email }}"
+        mailer: "/usr/sbin/sendmail -f {{ secure_device_log_from_email }} -t"
