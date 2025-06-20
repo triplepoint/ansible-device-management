@@ -5,7 +5,7 @@
 # specification versioning.
 # see http://www.postfix.org/postconf.5.html#compatibility_level
 # see http://www.postfix.org/COMPATIBILITY_README.html
-secure_emailer_compatibility_level: 0
+secure_emailer_compatibility_level: 3.6
 
 # The full domain name from which emails will originate
 secure_emailer_fqdn:

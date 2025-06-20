@@ -1,6 +1,7 @@
 ---
 # After a flury of time services, it looks like things settled on timedatectl
 # in systemd for the client, and chrony for running a service.
+# TODO - actually, the last time I rebuilt an ec2 instance, it had chrony installed as well, so maybe all chrony all the time?
 - name: Ensure the alternative time management packages are absent
   ansible.builtin.package:
     name: "{{ item }}"

@@ -45,7 +45,7 @@
 
 - name: Parse 'LANGUAGE' from current locale and language configuration
   ansible.builtin.set_fact:
-    _physical_device_locale_language: "{{ _physical_device_locale_status.stdout | regex_search('LANGUAGE=([^\n]+)', '\\1') | default([_physical_device_locale_lang], true) | first }}"
+    _physical_device_locale_language: "{{ _physical_device_locale_status.stdout | regex_search('LANGUAGE=([^\n]+)', '\\1') | default([_physical_device_locale_lang], true) | first }}" # noqa yaml[line-length]
 
 - name: Configure locale to {{ physical_device_locale + " and language to " + physical_device_language }}
   ansible.builtin.command: "localectl set-locale LANG={{ physical_device_locale }} LANGUAGE={{ physical_device_language }}"
