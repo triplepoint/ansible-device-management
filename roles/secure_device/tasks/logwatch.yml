@@ -3,10 +3,10 @@
   ansible.builtin.package:
     name: logwatch
     state: absent
-  when: not secure_device_log_to_email
+  when: secure_device_log_to_email == ""
 
 - name: Install logwatch
-  when: secure_device_log_to_email | default(false)
+  when: secure_device_log_to_email != ""
   block:
     - name: Ensure logwatch is present
       ansible.builtin.package:
